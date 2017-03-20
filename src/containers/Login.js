@@ -10,7 +10,7 @@ import {
   CognitoUser
 } from 'amazon-cognito-identity-js';
 import { withRouter } from 'react-router-dom';
-import LoaderButton from '../components/LoaderButton.js';
+import LoaderButton from '../components/LoaderButton';
 import config from '../config.js';
 import './Login.css';
 
