@@ -49,6 +49,13 @@ class Notes extends Component {
     }, this.props.userToken);
   }
 
+  deleteNote() {
+    return invokeApig({
+      path: `/notes/${this.props.match.params.id}`,
+      method: 'DELETE',
+    }, this.props.userToken);
+  }
+
   validateForm() {
     return this.state.content.length > 0;
   }
@@ -110,6 +117,15 @@ class Notes extends Component {
     }
 
     this.setState({ isDeleting: true });
+
+    try {
+      await this.deleteNote();
+      this.props.history.push('/');
+    }
+    catch(e) {
+      alert(e);
+      this.setState({ isDeleting: false });
+    }
   }
 
   render() {
