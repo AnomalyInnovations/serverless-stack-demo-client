@@ -5,6 +5,7 @@ import {
   FormControl,
   ControlLabel,
 } from 'react-bootstrap';
+import { invokeApig } from '../libs/awsLib.js';
 import LoaderButton from '../components/LoaderButton';
 import config from '../config.js';
 import './NewNote.css';
@@ -23,6 +24,14 @@ class NewNote extends Component {
 
   validateForm() {
     return this.state.content.length > 0;
+  }
+
+  createNote(note) {
+    return invokeApig({
+      path: '/notes',
+      method: 'POST',
+      body: note,
+    }, this.props.userToken);
   }
 
   handleChange = (event) => {
@@ -44,6 +53,18 @@ class NewNote extends Component {
     }
 
     this.setState({ isLoading: true });
+
+    try {
+      await this.createNote({
+        content: this.state.content,
+      });
+      this.props.history.push('/');
+    }
+    catch(e) {
+      alert(e);
+      this.setState({ isLoading: false });
+    }
+
   }
 
   render() {
