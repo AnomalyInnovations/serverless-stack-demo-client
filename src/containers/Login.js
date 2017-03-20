@@ -5,6 +5,12 @@ import {
   FormControl,
   ControlLabel,
 } from 'react-bootstrap';
+import {
+  CognitoUserPool,
+  AuthenticationDetails,
+  CognitoUser
+} from 'amazon-cognito-identity-js';
+import config from '../config.js';
 import './Login.css';
 
 class Login extends Component {
@@ -22,14 +28,43 @@ class Login extends Component {
       && this.state.password.length > 0;
   }
 
+  login(username, password) {
+    const userPool = new CognitoUserPool({
+      UserPoolId: config.cognito.USER_POOL_ID,
+      ClientId: config.cognito.APP_CLIENT_ID
+    });
+    const authenticationData = {
+      Username: username,
+      Password: password
+    };
+
+    const user = new CognitoUser({ Username: username, Pool: userPool });
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+    return new Promise((resolve, reject) => (
+      user.authenticateUser(authenticationDetails, {
+        onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
+        onFailure: (err) => reject(err),
+      })
+    ));
+  }
+
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
+
+    try {
+      const userToken = await this.login(this.state.username, this.state.password);
+      alert(userToken);
+    }
+    catch(e) {
+      alert(e);
+    }
   }
 
   render() {
