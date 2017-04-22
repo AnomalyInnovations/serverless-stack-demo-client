@@ -19,7 +19,7 @@ class Home extends Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     if (this.props.userToken === null) {
       return;
     }

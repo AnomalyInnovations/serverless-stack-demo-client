@@ -24,7 +24,7 @@ class Notes extends Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     try {
       const results = await this.getNote();
       this.setState({
