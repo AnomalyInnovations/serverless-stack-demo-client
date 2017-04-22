@@ -25,7 +25,7 @@ class App extends Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     const currentUser = this.getCurrentUser();
 
     if (currentUser === null) {
