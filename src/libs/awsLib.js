@@ -38,16 +38,7 @@ export function getAwsCredentials(userToken) {
     }
   });
 
-  return new Promise((resolve, reject) => (
-    AWS.config.credentials.get((err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      resolve();
-    })
-  ));
+  return AWS.config.credentials.getPromise();
 }
 
 export async function s3Upload(file, userToken) {
@@ -60,20 +51,10 @@ export async function s3Upload(file, userToken) {
   });
   const filename = `${AWS.config.credentials.identityId}-${Date.now()}-${file.name}`;
 
-  return new Promise((resolve, reject) => (
-    s3.upload({
-      Key: filename,
-      Body: file,
-      ContentType: file.type,
-      ACL: 'public-read',
-    },
-    (error, result) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve(result.Location);
-    })
-  ));
+  return s3.upload({
+    Key: filename,
+    Body: file,
+    ContentType: file.type,
+    ACL: 'public-read',
+  }).promise();
 }

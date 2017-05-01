@@ -56,7 +56,7 @@ class NewNote extends Component {
 
     try {
       const uploadedFilename = (this.file)
-        ? await s3Upload(this.file, this.props.userToken)
+        ? (await s3Upload(this.file, this.props.userToken)).Location
         : null;
 
       await this.createNote({

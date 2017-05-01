@@ -91,7 +91,7 @@ class Notes extends Component {
     try {
 
       if (this.file) {
-        uploadedFilename = await s3Upload(this.file, this.props.userToken);
+        uploadedFilename = (await s3Upload(this.file, this.props.userToken)).Location;
       }
 
       await this.saveNote({
