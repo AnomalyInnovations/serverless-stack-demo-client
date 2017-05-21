@@ -6,7 +6,7 @@ import {
   ControlLabel,
 } from 'react-bootstrap';
 import LoaderButton from '../components/LoaderButton';
-import { invokeApig, s3Upload } from '../libs/awsLib';
+import { invokeApig, s3Upload, s3Delete } from '../libs/awsLib';
 import config from '../config.js';
 import './Notes.css';
 
@@ -110,7 +110,7 @@ class Notes extends Component {
   handleDelete = async (event) => {
     event.preventDefault();
 
-    const confirmed = window.confirm('Are you sure you want to delete this note?');
+    const confirmed = confirm('Are you sure you want to delete this note?');
 
     if ( ! confirmed) {
       return;
@@ -119,6 +119,12 @@ class Notes extends Component {
     this.setState({ isDeleting: true });
 
     try {
+      if(this.state.note.attachment) {
+        const s3File = this.state.note.attachment.match(/(?:.*?\/){3}(.*)/);
+
+        s3Delete(unescape(s3File[1]), this.props.userToken);
+      }
+
       await this.deleteNote();
       this.props.history.push('/');
     }
