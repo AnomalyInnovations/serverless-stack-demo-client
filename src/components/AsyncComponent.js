@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default function asyncComponent(componentName) {
+export default function asyncComponent(importComponent) {
 
   class AsyncComponent extends Component {
 
@@ -13,7 +13,7 @@ export default function asyncComponent(componentName) {
     }
 
     async componentDidMount() {
-      const { default: component } = await import(`../containers/${componentName}`);
+      const { default: component } = await importComponent();
 
       this.setState({
         component: component
