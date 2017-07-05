@@ -58,3 +58,16 @@ export async function s3Upload(file, userToken) {
     ACL: 'public-read',
   }).promise();
 }
+
+export async function s3Delete(filename, userToken) {
+  await getAwsCredentials(userToken);
+
+  const s3 = new AWS.S3();
+
+  return s3.deleteObject(
+    {
+      Bucket: config.s3.BUCKET,
+      Key: filename
+    }).promise();
+
+}
