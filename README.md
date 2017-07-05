@@ -43,16 +43,13 @@ To support the different chapters and steps of the tutorial; we use branches to 
 
 #### Usage
 
-To use this repo locally you need to have [Create React App](https://github.com/facebookincubator/create-react-app) installed.
+This project is created using [Create React App](https://github.com/facebookincubator/create-react-app).
 
-``` bash
-$ npm install -g create-react-app
-```
-
-Clone this repo.
+To use this repo locally, start by cloning it and installing the NPM packages.
 
 ``` bash
 $ git clone https://github.com/AnomalyInnovations/serverless-stack-demo-client
+$ npm install
 ```
 
 Run it locally.
