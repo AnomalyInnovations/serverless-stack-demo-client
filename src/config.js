@@ -6,7 +6,7 @@ export default {
   },
   cognito: {
     REGION: 'us-east-1',
-    IDENTITY_POOL_ID: '29qpcqorti0ctjkur5h01dph5g',
+    IDENTITY_POOL_ID: 'us-east-1:565cc505-5486-4278-bf0f-9736b9fdd8c5',
     USER_POOL_ID : 'us-east-1_YEhdMFvix',
     APP_CLIENT_ID : '29qpcqorti0ctjkur5h01dph5g',
   }
