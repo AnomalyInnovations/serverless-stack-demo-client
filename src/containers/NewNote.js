@@ -5,7 +5,7 @@ import {
   FormControl,
   ControlLabel,
 } from 'react-bootstrap';
-import { invokeApig } from '../libs/awsLib';
+import { invokeApig, s3Upload } from '../libs/awsLib';
 import LoaderButton from '../components/LoaderButton';
 import config from '../config.js';
 import './NewNote.css';
@@ -47,8 +47,13 @@ class NewNote extends Component {
     this.setState({ isLoading: true });
 
     try {
+      const uploadedFilename = (this.file)
+        ? (await s3Upload(this.file, this.props.userToken)).Location
+        : null;
+
       await this.createNote({
         content: this.state.content,
+        attachment: uploadedFilename,
       });
       this.props.history.push('/');
     }
