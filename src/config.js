@@ -4,7 +4,7 @@ export default {
     BUCKET: 'notes-app-uploads'
   },
   apiGateway: {
-    URL: 'https://w5z1hloaz5.execute-api.us-east-1.amazonaws.com/test',
+    URL: 'https://5by75p4gn3.execute-api.us-east-1.amazonaws.com/prod',
     REGION: 'us-east-1',
   },
   cognito: {
