@@ -8,11 +8,9 @@ import {
   NavItem,
   Navbar
 } from 'react-bootstrap';
-import AWS from 'aws-sdk';
-import { CognitoUserPool, } from 'amazon-cognito-identity-js';
+import { authUser, signOutUser } from './libs/awsLib';
 import Routes from './Routes';
 import RouteNavItem from './components/RouteNavItem';
-import config from './config.js';
 import './App.css';
 
 class App extends Component {
@@ -21,53 +19,22 @@ class App extends Component {
     super(props);
 
     this.state = {
-      userToken: null,
+      isAuthenticated: false,
       isLoadingUserToken: true,
     };
   }
 
   async componentDidMount() {
-    const currentUser = this.getCurrentUser();
-
-    if (currentUser === null) {
-      this.setState({isLoadingUserToken: false});
-      return;
+    if (await authUser()) {
+      this.userHasAuthenticated(true);
     }
 
-    try {
-      const userToken = await this.getUserToken(currentUser);
-      this.updateUserToken(userToken);
-    }
-    catch(e) {
-      alert(e);
-    }
-
-    this.setState({isLoadingUserToken: false});
+    this.setState({ isLoadingUserToken: false });
   }
 
-  updateUserToken = (userToken) => {
+  userHasAuthenticated = (authenticated) => {
     this.setState({
-      userToken: userToken
-    });
-  }
-
-  getCurrentUser() {
-    const userPool = new CognitoUserPool({
-      UserPoolId: config.cognito.USER_POOL_ID,
-      ClientId: config.cognito.APP_CLIENT_ID
-    });
-    return userPool.getCurrentUser();
-  }
-
-  getUserToken(currentUser) {
-    return new Promise((resolve, reject) => {
-      currentUser.getSession(function(err, session) {
-        if (err) {
-            reject(err);
-            return;
-        }
-        resolve(session.getIdToken().getJwtToken());
-      });
+      isAuthenticated: authenticated
     });
   }
 
@@ -77,25 +44,17 @@ class App extends Component {
   }
 
   handleLogout = (event) => {
-    const currentUser = this.getCurrentUser();
+    signOutUser();
 
-    if (currentUser !== null) {
-      currentUser.signOut();
-    }
-
-    if (AWS.config.credentials) {
-      AWS.config.credentials.clearCachedId();
-    }
-
-    this.updateUserToken(null);
+    this.userHasAuthenticated(false);
 
     this.props.history.push('/login');
   }
 
   render() {
     const childProps = {
-      userToken: this.state.userToken,
-      updateUserToken: this.updateUserToken,
+      isAuthenticated: this.state.isAuthenticated,
+      userHasAuthenticated: this.userHasAuthenticated,
     };
 
     return ! this.state.isLoadingUserToken
@@ -111,7 +70,7 @@ class App extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              { this.state.userToken
+              { this.state.isAuthenticated
                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                 : [ <RouteNavItem key={1} onClick={this.handleNavLink} href="/signup">Signup</RouteNavItem>,
                     <RouteNavItem key={2} onClick={this.handleNavLink} href="/login">Login</RouteNavItem> ] }

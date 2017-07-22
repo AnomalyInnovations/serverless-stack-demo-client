@@ -20,7 +20,7 @@ class Home extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.userToken === null) {
+    if ( ! this.props.isAuthenticated) {
       return;
     }
 
@@ -38,7 +38,7 @@ class Home extends Component {
   }
 
   notes() {
-    return invokeApig({ path: '/notes' }, this.props.userToken);
+    return invokeApig({ path: '/notes' });
   }
 
   renderNotesList(notes) {
@@ -93,9 +93,9 @@ class Home extends Component {
   render() {
     return (
       <div className="Home">
-        { this.props.userToken === null
-          ? this.renderLander()
-          : this.renderNotes() }
+        { this.props.isAuthenticated
+          ? this.renderNotes()
+          : this.renderLander() }
       </div>
     );
   }

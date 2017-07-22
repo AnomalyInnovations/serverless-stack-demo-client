@@ -45,8 +45,8 @@ class Login extends Component {
 
     return new Promise((resolve, reject) => (
       user.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
-        onFailure: (err) => reject(err),
+        onSuccess: result => resolve(),
+        onFailure: err => reject(err),
       })
     ));
   }
@@ -63,8 +63,8 @@ class Login extends Component {
     this.setState({ isLoading: true });
 
     try {
-      const userToken = await this.login(this.state.username, this.state.password);
-      this.props.updateUserToken(userToken);
+      await this.login(this.state.username, this.state.password);
+      this.props.userHasAuthenticated(true);
     }
     catch(e) {
       alert(e);

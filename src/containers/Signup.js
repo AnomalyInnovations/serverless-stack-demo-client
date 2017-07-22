@@ -70,13 +70,13 @@ class Signup extends Component {
 
     try {
       await this.confirm(this.state.newUser, this.state.confirmationCode);
-      const userToken = await this.authenticate(
+      await this.authenticate(
         this.state.newUser,
         this.state.username,
         this.state.password
       );
 
-      this.props.updateUserToken(userToken);
+      this.props.userHasAuthenticated(true);
       this.props.history.push('/');
     }
     catch(e) {
@@ -125,8 +125,8 @@ class Signup extends Component {
 
     return new Promise((resolve, reject) => (
       user.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => resolve(result.getIdToken().getJwtToken()),
-        onFailure: (err) => reject(err),
+        onSuccess: result => resolve(),
+        onFailure: err => reject(err),
       })
     ));
   }

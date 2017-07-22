@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import sigV4Client from './sigV4Client';
 import config from '../config.js';
 
@@ -7,9 +8,11 @@ export async function invokeApig(
     method = 'GET',
     headers = {},
     queryParams = {},
-    body }, userToken) {
+    body }) {
 
-  await getAwsCredentials(userToken);
+  if ( ! await authUser()) {
+    throw new Error('User is not logged in');
+  }
 
   const signedRequest = sigV4Client
     .newClient({
@@ -43,11 +46,57 @@ export async function invokeApig(
   return results.json();
 }
 
-export function getAwsCredentials(userToken) {
+export async function authUser() {
   if (AWS.config.credentials && Date.now() < AWS.config.credentials.expireTime - 60000) {
-    return;
+    return true;
   }
 
+  const currentUser = getCurrentUser();
+
+  if (currentUser === null) {
+    return false;
+  }
+
+  const userToken = await getUserToken(currentUser);
+
+  await getAwsCredentials(userToken);
+
+  return true;
+}
+
+function getUserToken(currentUser) {
+  return new Promise((resolve, reject) => {
+    currentUser.getSession(function(err, session) {
+      if (err) {
+          reject(err);
+          return;
+      }
+      resolve(session.getIdToken().getJwtToken());
+    });
+  });
+}
+
+function getCurrentUser() {
+  const userPool = new CognitoUserPool({
+    UserPoolId: config.cognito.USER_POOL_ID,
+    ClientId: config.cognito.APP_CLIENT_ID
+  });
+  return userPool.getCurrentUser();
+}
+
+export function signOutUser() {
+  const currentUser = getCurrentUser();
+
+  if (currentUser !== null) {
+    currentUser.signOut();
+  }
+
+  if (AWS.config.credentials) {
+    AWS.config.credentials.clearCachedId();
+  }
+}
+
+function getAwsCredentials(userToken) {
   const authenticator = `cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
 
   AWS.config.update({ region: config.cognito.REGION });
@@ -62,8 +111,10 @@ export function getAwsCredentials(userToken) {
   return AWS.config.credentials.getPromise();
 }
 
-export async function s3Upload(file, userToken) {
-  await getAwsCredentials(userToken);
+export async function s3Upload(file) {
+  if ( ! await authUser()) {
+    throw new Error('User is not logged in');
+  }
 
   const s3 = new AWS.S3({
     params: {

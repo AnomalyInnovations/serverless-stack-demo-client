@@ -38,7 +38,7 @@ class Notes extends Component {
   }
 
   getNote() {
-    return invokeApig({ path: `/notes/${this.props.match.params.id}` }, this.props.userToken);
+    return invokeApig({ path: `/notes/${this.props.match.params.id}` });
   }
 
   validateForm() {
@@ -66,7 +66,7 @@ class Notes extends Component {
       path: `/notes/${this.props.match.params.id}`,
       method: 'PUT',
       body: note,
-    }, this.props.userToken);
+    });
   }
 
   handleSubmit = async (event) => {
@@ -84,7 +84,7 @@ class Notes extends Component {
     try {
 
       if (this.file) {
-        uploadedFilename = (await s3Upload(this.file, this.props.userToken)).Location;
+        uploadedFilename = (await s3Upload(this.file)).Location;
       }
 
       await this.saveNote({
@@ -104,7 +104,7 @@ class Notes extends Component {
     return invokeApig({
       path: `/notes/${this.props.match.params.id}`,
       method: 'DELETE',
-    }, this.props.userToken);
+    });
   }
 
   handleDelete = async (event) => {

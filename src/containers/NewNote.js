@@ -48,7 +48,7 @@ class NewNote extends Component {
 
     try {
       const uploadedFilename = (this.file)
-        ? (await s3Upload(this.file, this.props.userToken)).Location
+        ? (await s3Upload(this.file)).Location
         : null;
 
       await this.createNote({
@@ -69,7 +69,7 @@ class NewNote extends Component {
       path: '/notes',
       method: 'POST',
       body: note,
-    }, this.props.userToken);
+    });
   }
 
   render() {
