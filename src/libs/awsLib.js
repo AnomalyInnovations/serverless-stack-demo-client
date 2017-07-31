@@ -92,7 +92,7 @@ export function signOutUser() {
   }
 
   if (AWS.config.credentials) {
-    AWS.config.credentials.clearCachedId();
+    delete AWS.config.credentials;
   }
 }
 
