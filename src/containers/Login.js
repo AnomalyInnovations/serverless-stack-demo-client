@@ -9,12 +9,11 @@ import {
   AuthenticationDetails,
   CognitoUser
 } from 'amazon-cognito-identity-js';
-import { withRouter } from 'react-router-dom';
 import LoaderButton from '../components/LoaderButton';
 import config from '../config.js';
 import './Login.css';
 
-class Login extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -104,5 +103,3 @@ class Login extends Component {
     );
   }
 }
-
-export default withRouter(Login);

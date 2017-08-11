@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import {
   FormGroup,
   FormControl,
@@ -10,7 +9,7 @@ import LoaderButton from '../components/LoaderButton';
 import config from '../config.js';
 import './Notes.css';
 
-class Notes extends Component {
+export default class Notes extends Component {
   constructor(props) {
     super(props);
 
@@ -177,5 +176,3 @@ class Notes extends Component {
       );
   }
 }
-
-export default withRouter(Notes);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   PageHeader,
   ListGroup,
@@ -8,7 +8,7 @@ import {
 import { invokeApig } from '../libs/awsLib';
 import './Home.css';
 
-class Home extends Component {
+export default class Home extends Component {
 
   constructor(props) {
     super(props);
@@ -100,5 +100,3 @@ class Home extends Component {
     );
   }
 }
-
-export default withRouter(Home);

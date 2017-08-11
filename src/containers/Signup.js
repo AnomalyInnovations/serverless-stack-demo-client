@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import {
   HelpBlock,
   FormGroup,
@@ -15,7 +14,7 @@ import LoaderButton from '../components/LoaderButton';
 import config from '../config.js';
 import './Signup.css';
 
-class Signup extends Component {
+export default class Signup extends Component {
   constructor(props) {
     super(props);
 
@@ -202,5 +201,3 @@ class Signup extends Component {
     );
   }
 }
-
-export default withRouter(Signup);
