@@ -41,11 +41,6 @@ class App extends Component {
     this.setState({ isAuthenticated: authenticated });
   }
 
-  handleNavLink = (event) => {
-    event.preventDefault();
-    this.props.history.push(event.currentTarget.getAttribute('href'));
-  }
-
   handleLogout = (event) => {
     signOutUser();
 
@@ -74,8 +69,8 @@ class App extends Component {
             <Nav pullRight>
               { this.state.isAuthenticated
                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                : [ <RouteNavItem key={1} onClick={this.handleNavLink} href="/signup">Signup</RouteNavItem>,
-                    <RouteNavItem key={2} onClick={this.handleNavLink} href="/login">Login</RouteNavItem> ] }
+                : [ <RouteNavItem key={1} href="/signup">Signup</RouteNavItem>,
+                    <RouteNavItem key={2} href="/login">Login</RouteNavItem> ] }
             </Nav>
           </Navbar.Collapse>
         </Navbar>
