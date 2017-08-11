@@ -20,22 +20,25 @@ class App extends Component {
 
     this.state = {
       isAuthenticated: false,
-      isLoadingUserToken: true,
+      isAuthenticating: true,
     };
   }
 
   async componentDidMount() {
-    if (await authUser()) {
-      this.userHasAuthenticated(true);
+    try {
+      if (await authUser()) {
+        this.userHasAuthenticated(true);
+      }
+    }
+    catch(e) {
+      alert(e);
     }
 
-    this.setState({ isLoadingUserToken: false });
+    this.setState({ isAuthenticating: false });
   }
 
   userHasAuthenticated = (authenticated) => {
-    this.setState({
-      isAuthenticated: authenticated
-    });
+    this.setState({ isAuthenticated: authenticated });
   }
 
   handleNavLink = (event) => {
@@ -57,8 +60,7 @@ class App extends Component {
       userHasAuthenticated: this.userHasAuthenticated,
     };
 
-    return ! this.state.isLoadingUserToken
-    &&
+    return ! this.state.isAuthenticating &&
     (
       <div className="App container">
         <Navbar fluid collapseOnSelect>
