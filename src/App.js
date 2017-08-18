@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Nav, NavItem, Navbar } from "react-bootstrap";
 import Routes from "./Routes";
-import { authUser } from "./libs/awsLib";
+import { authUser, signOutUser } from "./libs/awsLib";
 import RouteNavItem from "./components/RouteNavItem";
 import "./App.css";
 
@@ -34,6 +34,8 @@ class App extends Component {
   }
 
   handleLogout = event => {
+    signOutUser();
+
     this.userHasAuthenticated(false);
   }
 
