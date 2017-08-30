@@ -217,7 +217,8 @@ sigV4Client.newClient = function(config) {
       body = JSON.stringify(body);
     }
 
-    // If there is no body remove the content-type header so it is not included in SigV4 calculation
+    // If there is no body remove the content-type header so it is not
+    // included in SigV4 calculation
     if (body === "" || body === undefined || body === null) {
       delete headers["Content-Type"];
     }

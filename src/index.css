@@ -5,27 +5,14 @@ body {
   font-size: 16px;
   color: #333;
 }
-
 h1, h2, h3, h4, h5, h6 {
   font-family: "PT Serif", serif;
 }
-
 select.form-control,
 textarea.form-control,
 input.form-control {
   font-size: 16px;
 }
-
 input[type=file] {
   width: 100%;
-}
-
-.spinning.glyphicon {
-  margin-right: 7px;
-  top: 2px;
-  animation: spin 1s infinite linear;
-}
-@keyframes spin {
-  from { transform: scale(1) rotate(0deg); }
-  to { transform: scale(1) rotate(360deg); }
 }
