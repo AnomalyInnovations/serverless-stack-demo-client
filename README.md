@@ -18,7 +18,7 @@ To support the different chapters and steps of the tutorial; we use branches to 
 - [Handle 404s](../../tree/handle-404s)
 - [Create a Login Page](../../tree/create-a-login-page)
 - [Login with AWS Cognito](../../tree/login-with-aws-cognito)
-- [Add the User Token to the State](../../tree/add-the-user-token-to-the-state)
+- [Add the Session to the State](../../tree/add-the-session-to-the-state)
 - [Load the State from the Session](../../tree/load-the-state-from-the-session)
 - [Clear the Session on Logout](../../tree/clear-the-session-on-logout)
 - [Redirect on Login and Logout](../../tree/redirect-on-login-and-logout)
