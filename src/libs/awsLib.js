@@ -14,6 +14,8 @@ export async function invokeApig({
     throw new Error("User is not logged in");
   }
 
+  return {};
+
   const signedRequest = sigV4Client
     .newClient({
       accessKey: AWS.config.credentials.accessKeyId,
@@ -85,7 +87,7 @@ export async function authUser() {
 
   const userToken = await getUserToken(currentUser);
 
-  await getAwsCredentials(userToken);
+  // await getAwsCredentials(userToken);
 
   return true;
 }

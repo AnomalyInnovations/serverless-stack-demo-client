@@ -1,3 +1,7 @@
+.Home .graphiql-container {
+  height: 77vh;
+}
+
 .Home .lander {
   padding: 80px 0;
   text-align: center;

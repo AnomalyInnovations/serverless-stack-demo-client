@@ -7,6 +7,8 @@ import {
 } from "react-bootstrap";
 import {
   AuthenticationDetails,
+  CognitoUser,
+  CognitoUserAttribute,
   CognitoUserPool
 } from "amazon-cognito-identity-js";
 import LoaderButton from "../components/LoaderButton";
@@ -20,6 +22,7 @@ export default class Signup extends Component {
     this.state = {
       isLoading: false,
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
       confirmationCode: "",
@@ -50,8 +53,13 @@ export default class Signup extends Component {
 
     this.setState({ isLoading: true });
 
-    try {
-      const newUser = await this.signup(this.state.email, this.state.password);
+    if(this.state.confirmationCode) try {
+        await this.confirmCode(this.state.usernameReset, this.state.confirmPasswordReset, this.state.confirmationCode);
+    } catch(e) {
+      alert(e);
+    }
+    else try {
+      const newUser = await this.signup(this.state.email, this.state.password, this.state.phone);
       this.setState({
         newUser: newUser
       });
@@ -83,14 +91,19 @@ export default class Signup extends Component {
     }
   }
 
-  signup(email, password) {
+  signup(email, password, phone) {
     const userPool = new CognitoUserPool({
       UserPoolId: config.cognito.USER_POOL_ID,
       ClientId: config.cognito.APP_CLIENT_ID
     });
+    const attributes = [
+        new CognitoUserAttribute({ Name : "email", Value : email }),
+        new CognitoUserAttribute({ Name : "preferred_username", Value : email }),
+        new CognitoUserAttribute({ Name : "phone_number", Value : phone }),
+    ];
 
-    return new Promise((resolve, reject) =>
-      userPool.signUp(email, password, [], null, (err, result) => {
+    return new Promise((resolve, reject) => (
+      userPool.signUp(email, password, attributes, null, (err, result) => {
         if (err) {
           reject(err);
           return;
@@ -98,7 +111,7 @@ export default class Signup extends Component {
 
         resolve(result.user);
       })
-    );
+    ));
   }
 
   confirm(user, confirmationCode) {
@@ -111,6 +124,31 @@ export default class Signup extends Component {
         resolve(result);
       })
     );
+  }
+
+  confirmCode(username, password, confirmationCode) {
+    const userPool = new CognitoUserPool({
+      UserPoolId: config.cognito.USER_POOL_ID,
+      ClientId: config.cognito.APP_CLIENT_ID
+    });
+
+    const userData = {
+      Username : username,
+      Pool : userPool
+    };
+
+    const cognitoUser = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => (
+      cognitoUser.confirmPassword(confirmationCode, password, {
+        onSuccess: function(result) {
+          resolve(result);
+        },
+        onFailure: function(err) {
+          reject(err);
+        },
+      }
+    )));
   }
 
   authenticate(user, email, password) {
@@ -157,6 +195,7 @@ export default class Signup extends Component {
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <span>New user flow:</span>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
@@ -165,6 +204,13 @@ export default class Signup extends Component {
             value={this.state.email}
             onChange={this.handleChange}
           />
+        </FormGroup>
+        <FormGroup controlId="phone" bsSize="large">
+          <ControlLabel>Telephone Number</ControlLabel>
+          <FormControl
+            type=""
+            value={this.state.phone}
+            onChange={this.handleChange} />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
           <ControlLabel>Password</ControlLabel>
@@ -189,8 +235,40 @@ export default class Signup extends Component {
           type="submit"
           isLoading={this.state.isLoading}
           text="Signup"
-          loadingText="Signing up…"
-        />
+          loadingText="Signing up…" />
+        <br/>
+        <span>AWS Cognito Console password reset flow:</span>
+        <FormGroup controlId="username" bsSize="large">
+          <ControlLabel>Email</ControlLabel>
+          <FormControl
+            autoFocus
+            type="email"
+            value={this.state.usernameReset}
+            onChange={this.handleChange} />
+        </FormGroup>
+        <FormGroup controlId="confirmPasswordReset" bsSize="large">
+          <ControlLabel>New Password after reset</ControlLabel>
+          <FormControl
+            value={this.state.confirmPasswordReset}
+            onChange={this.handleChange}
+            type="password" />
+        </FormGroup>
+        <FormGroup controlId="confirmationCodeReset" bsSize="large">
+          <ControlLabel>Confirmation Code</ControlLabel>
+          <FormControl
+            type="tel"
+            value={this.state.confirmationCode}
+            onChange={this.handleChange} />
+          <HelpBlock>Please check your phone for the code.</HelpBlock>
+        </FormGroup>
+        <LoaderButton
+          block
+          bsSize="large"
+          disabled={ ! this.validateConfirmationForm() }
+          type="submit"
+          isLoading={this.state.isLoading}
+          text="Verify"
+          loadingText="Verifying…" />
       </form>
     );
   }
