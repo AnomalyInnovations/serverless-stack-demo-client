@@ -108,15 +108,24 @@ export default class Home extends Component {
   }
 
   renderGraphiQL() {
-    var q = `# default query
-{
-  policy {
-    _id
+    var q = `# mutation for int. test '#001 - A mobile user opens the app'
+mutation test {
+  createAnonymousAccount(client:"tcm:mobileapp:roam") {
+    accountRn
   }
-}`
+}`;
+    var r = `// example mutation result
+{
+  "data": {
+    "createAnonymousAccount": {
+      "accountRn": "tcmrn:account:2b027653-8295-4839-b9d7-5152cfa729ca"
+    }
+  }
+}`;
+
     return <GraphiQL
       fetcher={this.graphQLFetcher}
-      response='{"data":{"policy":{"_id":"c1ac5bde-9e2c-45d5-b72b-a5ac691944ea"}}}'
+      response={r}
       defaultQuery={q}
       />;
   }
