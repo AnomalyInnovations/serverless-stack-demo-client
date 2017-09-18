@@ -110,7 +110,7 @@ export default class Home extends Component {
   renderGraphiQL() {
     var q = `# mutation for int. test '#001 - A mobile user opens the app'
 mutation test {
-  createAnonymousAccount(client:"tcm:mobileapp:roam") {
+  createAnonymousAccount(client:"tcmrn:mobileapp:roam") {
     accountRn
   }
 }`;
