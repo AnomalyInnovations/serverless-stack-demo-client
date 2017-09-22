@@ -18,7 +18,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "start-local": "sh -c 'env `sed b ../web-local.env` react-scripts start'",
+    "start-local": "sh -c 'env `sed b ./web-local.env` react-scripts start'",
     "start-online": "sh -c 'env `sed b ../web.env` react-scripts start'",
     "predeploy": "npm run build",
     "deploy": "aws s3 sync build/ s3://notes-app-client",
