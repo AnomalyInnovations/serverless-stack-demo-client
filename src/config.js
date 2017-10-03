@@ -4,13 +4,14 @@ export default {
     BUCKET: "notes-app-uploads"
   },
   apiGateway: {
-    REGION: "us-east-1",
-    URL: "https://5by75p4gn3.execute-api.us-east-1.amazonaws.com/prod"
+    REGION: 'eu-west-1',
+    URL: 'https://localhost:3000/',
   },
+  graphqlURL: process.env.REACT_APP_TCM_API || 'https://localhost:3000/graphql',
   cognito: {
-    REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_udmFFSb92",
-    APP_CLIENT_ID: "4hmari2sqvskrup67crkqa4rmo",
-    IDENTITY_POOL_ID: "us-east-1:ceef8ccc-0a19-4616-9067-854dc69c2d82"
+    REGION: 'eu-west-1',
+    IDENTITY_POOL_ID: 'us-east-1:000000', // is not used
+    USER_POOL_ID : process.env.REACT_APP_USER_POOL_ID || 'eu-west-1_00000000',
+    APP_CLIENT_ID : process.env.REACT_APP_APP_CLIENT_ID || '111111111111111111111111',
   }
 };

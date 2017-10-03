@@ -1,0 +1,16 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - npm install -g yarn
+  pre_build:
+    commands:
+      - yarn
+  build:
+    commands:
+      - yarn run build
+  post_build:
+    commands:
+      - aws s3 sync --delete build/ "s3://${BUCKET_NAME}"
+      - aws configure set preview.cloudfront true
+      - aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths '/*'
