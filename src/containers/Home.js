@@ -98,9 +98,18 @@ export default class Home extends Component {
   }
 
   graphQLFetcher(graphQLParams) {
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Api-Key": process.env.REACT_APP_TCM_API_KEY || 'aKey'
+    };
+
+    if(process.env.REACT_APP_TCM_API_DEBUG) {
+      headers["X-DEBUG"] = '*'; // enable lambda logging
+    }
+
     return fetch(config.graphqlURL, {
-      method: "post",
-      headers: { "Content-Type": "application/json", "X-Api-Key": process.env.REACT_APP_TCM_API_KEY || 'aKey' },
+      method: "POST",
+      headers,
       body: JSON.stringify(graphQLParams),
     }).then(function (response) {
       return response.json();
