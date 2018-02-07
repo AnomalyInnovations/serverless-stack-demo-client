@@ -19,7 +19,7 @@ class App extends Component {
   async componentDidMount() {
     try {
       if (await authUser()) {
-        this.userHasAuthenticated(true);
+        await this.userHasAuthenticated(true);
       }
     }
     catch(e) {
