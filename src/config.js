@@ -12,8 +12,8 @@ export default {
     IDENTITY_POOL_ID: 'ap-southeast-1:492f49ef-38b8-412e-b554-ac85df80bb8b',
     USER_POOL_ID: 'ap-southeast-1_t5QL9Po55',
     APP_CLIENT_ID: '5q7qp2cbjjeoc8kaav27t6j0ug',
-    AUTH_HOST: 'https://rentraffic-localhost.auth.ap-southeast-1.amazoncognito.com',
-    REDIRECT_URI: 'http://localhost:3000/oauth',
-    FACEBOOK_API_KEY: '363728857435208'
+    AUTH_HOST: "https://{YOUR DOMAIN}.auth.ap-southeast-1.amazoncognito.com",
+    REDIRECT_URI: 'http://localhost:3000/oauth/',
+    FACEBOOK_API_KEY: '[facebook api key]'
   }
 };
