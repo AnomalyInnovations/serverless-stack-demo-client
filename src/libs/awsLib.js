@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { CognitoUserPool } from "amazon-cognito-identity-js";
+import { CognitoUserPool, CognitoUser } from "amazon-cognito-identity-js";
 import sigV4Client from "./sigV4Client";
 import config from "../config";
 
@@ -137,4 +137,76 @@ function getAwsCredentials(userToken) {
   });
 
   return AWS.config.credentials.getPromise();
+}
+
+export async function socialOAuth2(netwrok = 'Facebook') {
+  return new Promise((resolve, reject) => {
+    let authHost = config.cognito.AUTH_HOST;
+    let identityProvider = netwrok;
+    let redirectUri = config.cognito.REDIRECT_URI;
+    let responseType = 'token';
+    let clientId = config.cognito.APP_CLIENT_ID;
+    let state = 'some_state';
+    let scope = 'profile email openid';
+
+    let authUrl = `${authHost}/oauth2/authorize?identity_provider=${identityProvider}&redirect_uri=${redirectUri}&response_type=${responseType}&client_id=${clientId}&state=${state}&scope=${scope}`
+    console.debug(authUrl);
+    window.open(
+      authUrl,
+      "facebook",
+      "location,toolbar,resizable,scrollbars,status,width=600,height=600"
+    );
+
+    window.addEventListener("message", res => {
+      let tokensData = res.data;
+      console.debug(tokensData);
+      if (typeof tokensData === 'string' || 'error_description' in tokensData) {
+        alert(tokensData.error_description);
+        return;
+      }
+
+
+      let token = tokensData.IdToken;
+      let payload = token.split('.')[1];
+      payload = JSON.parse(atob(payload));
+      let username = payload['cognito:username'];
+      // const cognitoIdentityService = new AWS.CognitoIdentityServiceProvider();
+
+      let userPoolId = config.cognito.USER_POOL_ID;
+      let clientId = config.cognito.APP_CLIENT_ID;
+      let login = 'cognito-idp.' + config.cognito.REGION + '.amazonaws.com/' + userPoolId;
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
+        Logins: {
+          [login]: token
+        }
+      });
+      AWS.config.update({ region: config.cognito.REGION });
+
+      // AWS.config.credentials.params.Logins['cognito-idp.' + config.REGION + '.amazonaws.com/' + userPoolId] = token;
+      AWS.config.credentials.get(err => {
+        if (err) {
+          return reject(err);
+        }
+
+        let poolData = {
+          UserPoolId: userPoolId, // Your user pool id here
+          ClientId: clientId // Your client id here
+        };
+        let userPool = new CognitoUserPool(poolData);
+        let userData = {
+          Username: username,
+          Pool: userPool
+        };
+
+        var cognitoUser = new CognitoUser(userData);
+
+        cognitoUser.signInUserSession = cognitoUser.getCognitoUserSession(tokensData);
+        cognitoUser.cacheTokens();
+
+        console.log("Amazon Cognito Identity", AWS.config.credentials.identityId);
+        resolve(token);
+      });
+    }, false);
+  });
 }
