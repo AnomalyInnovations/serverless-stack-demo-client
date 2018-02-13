@@ -12,6 +12,7 @@ import {
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Signup.css";
+import FacebookButton from '../components/FacebookButton'
 
 export default class Signup extends Component {
   constructor(props) {
@@ -25,6 +26,9 @@ export default class Signup extends Component {
       confirmationCode: "",
       newUser: null
     };
+  }
+  handleCallback = userToken => {
+    this.props.userHasAuthenticated(true);
   }
 
   validateForm() {
@@ -157,6 +161,7 @@ export default class Signup extends Component {
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <FacebookButton buttonClass="fb-button-signup" callback={this.handleCallback} />
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl

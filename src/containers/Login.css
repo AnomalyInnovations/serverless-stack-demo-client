@@ -8,3 +8,8 @@
     max-width: 320px;
   }
 }
+.fb-button-login {
+  background-image: url("/img/fb-login.png");
+  background-size: 100% auto;
+  height: 57px;
+}

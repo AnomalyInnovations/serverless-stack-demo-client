@@ -8,6 +8,7 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Login.css";
+import FacebookButton from '../components/FacebookButton'
 
 export default class Login extends Component {
   constructor(props) {
@@ -18,6 +19,9 @@ export default class Login extends Component {
       email: "",
       password: ""
     };
+  }
+  handleCallback = userToken => {
+    this.props.userHasAuthenticated(true);
   }
 
   login(email, password) {
@@ -65,6 +69,7 @@ export default class Login extends Component {
     return (
       <div className="Login">
         <form onSubmit={this.handleSubmit}>
+          <FacebookButton buttonClass="fb-button-login" callback={this.handleCallback} />
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
             <FormControl

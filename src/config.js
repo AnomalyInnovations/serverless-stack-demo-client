@@ -8,9 +8,12 @@ export default {
     URL: "https://5by75p4gn3.execute-api.us-east-1.amazonaws.com/prod"
   },
   cognito: {
-    REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_udmFFSb92",
-    APP_CLIENT_ID: "4hmari2sqvskrup67crkqa4rmo",
-    IDENTITY_POOL_ID: "us-east-1:ceef8ccc-0a19-4616-9067-854dc69c2d82"
+    REGION: 'ap-southeast-1',
+    IDENTITY_POOL_ID: 'ap-southeast-1:492f49ef-38b8-412e-b554-ac85df80bb8b',
+    USER_POOL_ID: 'ap-southeast-1_t5QL9Po55',
+    APP_CLIENT_ID: '5q7qp2cbjjeoc8kaav27t6j0ug',
+    AUTH_HOST: "https://{YOUR DOMAIN}.auth.ap-southeast-1.amazoncognito.com",
+    REDIRECT_URI: 'http://localhost:3000/oauth/',
+    FACEBOOK_API_KEY: '[facebook api key]'
   }
 };

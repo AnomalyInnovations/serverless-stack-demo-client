@@ -9,6 +9,7 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.2.0",
+    "react-facebook": "^4.2.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17"
   },
