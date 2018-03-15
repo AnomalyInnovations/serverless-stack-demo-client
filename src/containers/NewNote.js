@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { API } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import { invokeApig, s3Upload } from "../libs/awsLib";
+import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./NewNote.css";
 
@@ -17,16 +18,14 @@ export default class NewNote extends Component {
     };
   }
 
-  validateForm() {
-    return this.state.content.length > 0;
-  }
-
   createNote(note) {
-    return invokeApig({
-      path: "/notes",
-      method: "POST",
+    return API.post("notes", "/notes", {
       body: note
     });
+  }
+
+  validateForm() {
+    return this.state.content.length > 0;
   }
 
   handleChange = event => {
@@ -50,13 +49,13 @@ export default class NewNote extends Component {
     this.setState({ isLoading: true });
 
     try {
-      const uploadedFilename = this.file
-        ? (await s3Upload(this.file)).Location
+      const attachment = this.file
+        ? await s3Upload(this.file)
         : null;
 
       await this.createNote({
-        content: this.state.content,
-        attachment: uploadedFilename
+        attachment,
+        content: this.state.content
       });
       this.props.history.push("/");
     } catch (e) {

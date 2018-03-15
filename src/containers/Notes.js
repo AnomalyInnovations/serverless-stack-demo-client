@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { API, Storage } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import { invokeApig, s3Upload } from "../libs/awsLib";
+import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./Notes.css";
 
@@ -15,16 +16,25 @@ export default class Notes extends Component {
       isLoading: null,
       isDeleting: null,
       note: null,
-      content: ""
+      content: "",
+      attachmentURL: null
     };
   }
 
   async componentDidMount() {
     try {
-      const results = await this.getNote();
+      let attachmentURL;
+      const note = await this.getNote();
+      const { content, attachment } = note;
+
+      if (attachment) {
+        attachmentURL = await Storage.vault.get(attachment);
+      }
+
       this.setState({
-        note: results,
-        content: results.content
+        note,
+        content,
+        attachmentURL
       });
     } catch (e) {
       alert(e);
@@ -32,22 +42,17 @@ export default class Notes extends Component {
   }
 
   getNote() {
-    return invokeApig({ path: `/notes/${this.props.match.params.id}` });
-  }
-
-  deleteNote() {
-    return invokeApig({
-      path: `/notes/${this.props.match.params.id}`,
-      method: "DELETE"
-    });
+    return API.get("notes", `/notes/${this.props.match.params.id}`);
   }
 
   saveNote(note) {
-    return invokeApig({
-      path: `/notes/${this.props.match.params.id}`,
-      method: "PUT",
+    return API.put("notes", `/notes/${this.props.match.params.id}`, {
       body: note
     });
+  }
+
+  deleteNote() {
+    return API.del("notes", `/notes/${this.props.match.params.id}`);
   }
 
   validateForm() {
@@ -55,9 +60,7 @@ export default class Notes extends Component {
   }
 
   formatFilename(str) {
-    return str.length < 50
-      ? str
-      : str.substr(0, 20) + "..." + str.substr(str.length - 20, str.length);
+    return str.replace(/^\w+-/, "");
   }
 
   handleChange = event => {
@@ -71,7 +74,7 @@ export default class Notes extends Component {
   }
 
   handleSubmit = async event => {
-    let uploadedFilename;
+    let attachment;
 
     event.preventDefault();
 
@@ -84,14 +87,12 @@ export default class Notes extends Component {
 
     try {
       if (this.file) {
-        uploadedFilename = (await s3Upload(this.file))
-          .Location;
+        attachment = await s3Upload(this.file);
       }
 
       await this.saveNote({
-        ...this.state.note,
         content: this.state.content,
-        attachment: uploadedFilename || this.state.note.attachment
+        attachment: attachment || this.state.note.attachment
       });
       this.props.history.push("/");
     } catch (e) {
@@ -141,7 +142,7 @@ export default class Notes extends Component {
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={this.state.note.attachment}
+                    href={this.state.attachmentURL}
                   >
                     {this.formatFilename(this.state.note.attachment)}
                   </a>

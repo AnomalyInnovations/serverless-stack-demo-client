@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { API } from "aws-amplify";
 import { Link } from "react-router-dom";
 import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
-import { invokeApig } from '../libs/awsLib';
 import "./Home.css";
 
 export default class Home extends Component {
@@ -20,8 +20,8 @@ export default class Home extends Component {
     }
 
     try {
-      const results = await this.notes();
-      this.setState({ notes: results });
+      const notes = await this.notes();
+      this.setState({ notes });
     } catch (e) {
       alert(e);
     }
@@ -30,7 +30,7 @@ export default class Home extends Component {
   }
 
   notes() {
-    return invokeApig({ path: "/notes" });
+    return API.get("notes", "/notes");
   }
 
   handleNoteClick = event => {
