@@ -24,7 +24,7 @@ const prod = {
   },
   apiGateway: {
     REGION: "us-east-1",
-    URL: "https://cjsxz88ujj.execute-api.us-east-1.amazonaws.com/prod"
+    URL: "https://api-serverless-stack.seed-demo.club/prod"
   },
   cognito: {
     REGION: "us-east-1",
