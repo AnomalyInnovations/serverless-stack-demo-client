@@ -17,9 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "predeploy": "npm run build",
-    "deploy": "aws s3 sync build/ s3://notes-app-client --delete",
-    "postdeploy": "aws cloudfront create-invalidation --distribution-id E1KTCKT9SOAHBW --paths '/*' && aws cloudfront create-invalidation --distribution-id E3MQXGQ47VCJB0 --paths '/*'",
+    "build:netlify": "npm run build && cp _redirects build/_redirects",
     "eject": "react-scripts eject"
   }
 }

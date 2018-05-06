@@ -1,0 +1,24 @@
+# Global settings applied to the whole site.
+# “base” is directory to change to before starting build, and
+# “publish” is the directory to publish (relative to root of your repo).
+# “command” is your build command.
+
+[build]
+  base    = ""
+  publish = "build"
+  command = "REACT_APP_STAGE=dev npm run build:netlify"
+
+# Production context: All deploys to the main
+# repository branch will inherit these settings.
+[context.production]
+  command = "REACT_APP_STAGE=prod npm run build:netlify"
+
+# Deploy Preview context: All Deploy Previews
+# will inherit these settings.
+[context.deploy-preview]
+  command = "REACT_APP_STAGE=dev npm run build:netlify"
+
+# Branch Deploy context: All deploys that are not in
+# an active Deploy Preview will inherit these settings.
+[context.branch-deploy]
+  command = "REACT_APP_STAGE=dev npm run build:netlify"
