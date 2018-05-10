@@ -15,7 +15,9 @@ To support the different chapters and steps of the tutorial; we use branches to 
 - [Call the List API](../../tree/call-the-list-api)
 - [Delete a Note](../../tree/delete-a-note)
 - [Redirect on Login](../../tree/redirect-on-login)
+- [Update the App](../../tree/update-the-app)
 - [Code Splitting in Create React App](../../tree/code-splitting-in-create-react-app)
+- [Create a Build Script](../../tree/create-a-build-script)
 
 #### Usage
 
@@ -49,7 +51,7 @@ $ npm run deploy
 
 #### Maintainers
 
-Serverless Stack is authored and maintained by Frank Wang ([@fanjiewang](https://twitter.com/fanjiewang)) & Jay V ([@jayair](https://twitter.com/jayair)). [**Subscribe to our newsletter**](http://eepurl.com/cEaBlf) for updates on Serverless Stack. Send us an [email][Email] if you have any questions.
+Serverless Stack is authored and maintained by Frank Wang ([@fanjiewang](https://twitter.com/fanjiewang)) & Jay V ([@jayair](https://twitter.com/jayair)). [**Subscribe to our newsletter**](https://emailoctopus.com/lists/1c11b9a8-1500-11e8-a3c9-06b79b628af2/forms/subscribe) for updates on Serverless Stack. Send us an [email][Email] if you have any questions.
 
 [Email]: mailto:contact@anoma.ly
 
