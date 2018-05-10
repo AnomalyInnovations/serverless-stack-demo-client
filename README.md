@@ -36,19 +36,6 @@ Run it locally.
 $ npm run start
 ```
 
-To deploy, replace the following in the [`package.json`](package.json) with your S3 bucket and CloudFront distributions.
-
-```
-"deploy": "aws s3 sync build/ s3://notes-app-client",
-"postdeploy": "aws cloudfront create-invalidation --distribution-id E1KTCKT9SOAHBW --paths '/*' && aws cloudfront create-invalidation --distribution-id E3MQXGQ47VCJB0 --paths '/*'",
-```
-
-And run.
-
-``` bash
-$ npm run deploy
-```
-
 #### Maintainers
 
 Serverless Stack is authored and maintained by Frank Wang ([@fanjiewang](https://twitter.com/fanjiewang)) & Jay V ([@jayair](https://twitter.com/jayair)). [**Subscribe to our newsletter**](https://emailoctopus.com/lists/1c11b9a8-1500-11e8-a3c9-06b79b628af2/forms/subscribe) for updates on Serverless Stack. Send us an [email][Email] if you have any questions.
