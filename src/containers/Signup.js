@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import uuidv4 from "uuid/v4";
 import {
   HelpBlock,
   FormGroup,
@@ -49,11 +48,8 @@ export default class Signup extends Component {
 
     try {
       const newUser = await Auth.signUp({
-        username: uuidv4(),
-        password: this.state.password,
-        attributes: {
-          email: this.state.email
-        }
+        username: this.state.email,
+        password: this.state.password
       });
       this.setState({
         newUser
@@ -71,7 +67,7 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
 
     try {
-      await Auth.confirmSignUp(this.state.newUser.user.username, this.state.confirmationCode);
+      await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
       await Auth.signIn(this.state.email, this.state.password);
 
       this.props.userHasAuthenticated(true);
