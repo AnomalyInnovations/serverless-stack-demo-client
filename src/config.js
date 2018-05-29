@@ -13,6 +13,9 @@ const dev = {
     USER_POOL_ID: "us-east-1_yKOQs2dWK",
     APP_CLIENT_ID: "1h0r8s763vnqj4id6dvguanp8f",
     IDENTITY_POOL_ID: "us-east-1:dedfd34a-9d7e-4bf2-a1dd-ef603bac2ecb"
+  },
+  social: {
+    facebook: "YOUR_FB_APP_ID"
   }
 };
 
@@ -35,9 +38,7 @@ const prod = {
 };
 
 // Default to dev if not set
-const config = process.env.REACT_APP_STAGE === 'prod'
-  ? prod
-  : dev;
+const config = process.env.REACT_APP_STAGE === "prod" ? prod : dev;
 
 export default {
   // Add common config values here

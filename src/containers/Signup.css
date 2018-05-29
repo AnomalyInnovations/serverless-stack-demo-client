@@ -14,3 +14,9 @@
   padding-bottom: 10px;
   color: #999;
 }
+
+.fb-button-signup {
+  background-image: url("/img/fb-signup.png");
+  background-size: 100% auto;
+  height: 57px;
+}
