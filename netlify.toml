@@ -22,3 +22,10 @@
 # an active Deploy Preview will inherit these settings.
 [context.branch-deploy]
   command = "REACT_APP_STAGE=dev npm run build:netlify"
+
+# Always redirect any request to our index.html
+# and return the status code 200.
+[[redirects]]
+  from    = "/*"
+  to      = "/index.html"
+  status  = 200
