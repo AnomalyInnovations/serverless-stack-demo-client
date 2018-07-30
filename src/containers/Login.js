@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import FacebookButton from "../components/FacebookButton";
 import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 
@@ -14,6 +15,9 @@ export default class Login extends Component {
       password: ""
     };
   }
+  handleCallback = userToken => {
+    this.props.userHasAuthenticated(true);
+  };
 
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
@@ -23,7 +27,7 @@ export default class Login extends Component {
     this.setState({
       [event.target.id]: event.target.value
     });
-  }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -37,12 +41,16 @@ export default class Login extends Component {
       alert(e.message);
       this.setState({ isLoading: false });
     }
-  }
+  };
 
   render() {
     return (
       <div className="Login">
         <form onSubmit={this.handleSubmit}>
+          <FacebookButton
+            buttonClass="fb-button-signup"
+            callback={this.handleCallback}
+          />
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
             <FormControl
