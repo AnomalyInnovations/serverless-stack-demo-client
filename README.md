@@ -9,8 +9,8 @@ This repo is for the frontend React app that we build over the course of the tut
 To support the different chapters and steps of the tutorial; we use branches to represent the project codebase at the various points. Here is an index of the various chapters and branches in order.
 
 - [Part I](../../tree/part-1)
-- [Code Splitting in Create React App](../../tree/code-splitting-in-create-react-app)
 - [Part II](../../tree/master)
+- [Code Splitting in Create React App](../../tree/code-splitting-in-create-react-app)
 
 #### Usage
 
