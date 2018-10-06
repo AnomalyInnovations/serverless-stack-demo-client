@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
 import { Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import "./Home.css";
 
@@ -33,32 +34,28 @@ export default class Home extends Component {
     return API.get("notes", "/notes");
   }
 
-  handleNoteClick = event => {
-    event.preventDefault();
-    this.props.history.push(event.currentTarget.getAttribute("href"));
-  }
-
   renderNotesList(notes) {
     return [{}].concat(notes).map(
       (note, i) =>
         i !== 0
-          ? <ListGroupItem
+          ? <LinkContainer
               key={note.noteId}
-              href={`/notes/${note.noteId}`}
-              onClick={this.handleNoteClick}
-              header={note.content.trim().split("\n")[0]}
+              to={`/notes/${note.noteId}`}
             >
-              {"Created: " + new Date(note.createdAt).toLocaleString()}
-            </ListGroupItem>
-          : <ListGroupItem
+              <ListGroupItem header={note.content.trim().split("\n")[0]}>
+                {"Created: " + new Date(note.createdAt).toLocaleString()}
+              </ListGroupItem>
+            </LinkContainer>
+          : <LinkContainer
               key="new"
-              href="/notes/new"
-              onClick={this.handleNoteClick}
+              to="/notes/new"
             >
-              <h4>
-                <b>{"\uFF0B"}</b> Create a new note
-              </h4>
-            </ListGroupItem>
+              <ListGroupItem>
+                <h4>
+                  <b>{"\uFF0B"}</b> Create a new note
+                </h4>
+              </ListGroupItem>
+            </LinkContainer>
     );
   }
 
