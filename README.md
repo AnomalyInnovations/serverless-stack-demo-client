@@ -8,16 +8,9 @@ This repo is for the frontend React app that we build over the course of the tut
 
 To support the different chapters and steps of the tutorial; we use branches to represent the project codebase at the various points. Here is an index of the various chapters and branches in order.
 
-- [Configure AWS Amplify](../../tree/configure-aws-amplify)
-- [Give Feedback While Logging In](../../tree/give-feedback-while-logging-in)
-- [Signup with AWS Cognito](../../tree/signup-with-aws-cognito)
-- [Upload a File to S3](../../tree/upload-a-file-to-s3)
-- [Call the List API](../../tree/call-the-list-api)
-- [Delete a Note](../../tree/delete-a-note)
-- [Redirect on Login](../../tree/redirect-on-login)
-- [Update the App](../../tree/update-the-app)
+- [Part I](../../tree/part-1)
 - [Code Splitting in Create React App](../../tree/code-splitting-in-create-react-app)
-- [Create a Build Script](../../tree/create-a-build-script)
+- [Part II](../../tree/master)
 
 #### Usage
 
