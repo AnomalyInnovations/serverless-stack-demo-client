@@ -18,9 +18,8 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-      if (await Auth.currentSession()) {
-        this.userHasAuthenticated(true);
-      }
+      await Auth.currentSession();
+      this.userHasAuthenticated(true);
     }
     catch(e) {
       if (e !== 'No current user') {
