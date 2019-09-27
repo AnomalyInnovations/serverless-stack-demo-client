@@ -5,7 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import Routes from "./Routes";
 import "./App.css";
 
-function App() {
+function App(props) {
   return (
     <div className="App container">
       <Navbar fluid collapseOnSelect>
