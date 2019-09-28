@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
+import { API } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
+import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./NewNote.css";
 
@@ -29,6 +31,24 @@ export default function NewNote(props) {
     }
 
     setIsLoading(true);
+
+    try {
+      const attachment = file.current
+        ? await s3Upload(file.current)
+        : null;
+
+      await createNote({ content, attachment });
+      props.history.push("/");
+    } catch (e) {
+      alert(e);
+      setIsLoading(false);
+    }
+  }
+
+  function createNote(note) {
+    return API.post("notes", "/notes", {
+      body: note
+    });
   }
 
   return (
@@ -47,14 +67,14 @@ export default function NewNote(props) {
         </FormGroup>
         <LoaderButton
           block
-          text="Create"
           type="submit"
           bsSize="large"
           bsStyle="primary"
           isLoading={isLoading}
-          loadingText="Creating…"
           disabled={!validateForm()}
-        />
+        >
+          Create
+        </LoaderButton>
       </form>
     </div>
   );
