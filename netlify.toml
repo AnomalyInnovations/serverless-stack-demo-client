@@ -26,6 +26,6 @@
 # Always redirect any request to our index.html
 # and return the status code 200.
 [[redirects]]
-  from    = "/*"
-  to      = "/index.html"
-  status  = 200
+    from    = "/*"
+    to      = "/index.html"
+    status  = 200
