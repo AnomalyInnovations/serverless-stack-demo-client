@@ -18,9 +18,8 @@ function App(props) {
     try {
       await Auth.currentSession();
       userHasAuthenticated(true);
-    }
-    catch(e) {
-      if (e !== 'No current user') {
+    } catch (e) {
+      if (e !== "No current user") {
         alert(e);
       }
     }
@@ -42,7 +41,7 @@ function App(props) {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Scratch</Link>
+              <Link to="/">{`Scratch - v${process.env.REACT_APP_VERSION}`}</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
