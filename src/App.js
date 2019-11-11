@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Auth } from "aws-amplify";
-import { Link, withRouter } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import Routes from "./Routes";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import { NavLink, withRouter } from 'react-router-dom';
+import { CssBaseline, Button, Container } from '@material-ui/core';
+import { Auth } from 'aws-amplify';
 
+import Routes from './Routes';
+
+import { Navigation } from './components/Navigation/Navigation';
+
+/**
+ * !IMPORTANT - I'm just enforcing material ui to work. I'm not changing any logic behind this boilerplate @vincent.
+ */
 function App(props) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
@@ -18,8 +22,7 @@ function App(props) {
     try {
       await Auth.currentSession();
       userHasAuthenticated(true);
-    }
-    catch(e) {
+    } catch (e) {
       if (e !== 'No current user') {
         alert(e);
       }
@@ -33,43 +36,38 @@ function App(props) {
 
     userHasAuthenticated(false);
 
-    props.history.push("/login");
+    props.history.push('/login');
   }
 
   return (
     !isAuthenticating && (
-      <div className="App container">
-        <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Scratch</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
-              {isAuthenticated ? (
-                <>
-                  <LinkContainer to="/settings">
-                    <NavItem>Settings</NavItem>
-                  </LinkContainer>
-                  <NavItem onClick={handleLogout}>Logout</NavItem>
-                </>
-              ) : (
-                <>
-                  <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
-                  </LinkContainer>
-                  <LinkContainer to="/login">
-                    <NavItem>Login</NavItem>
-                  </LinkContainer>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
-      </div>
+      <>
+        <CssBaseline />
+        <Navigation>
+          {isAuthenticated ? (
+            <>
+              <Button color="inherit" component={NavLink} to="/settings">
+                Settings
+              </Button>
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={NavLink} to="/login">
+                Log in
+              </Button>
+              <Button color="inherit" component={NavLink} to="/signup">
+                Sign up
+              </Button>
+            </>
+          )}
+        </Navigation>
+        <Container>
+          <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
+        </Container>
+      </>
     )
   );
 }

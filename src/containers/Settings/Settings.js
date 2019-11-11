@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { API } from "aws-amplify";
-import { Elements, StripeProvider } from "react-stripe-elements";
-import BillingForm from "../components/BillingForm";
-import config from "../config";
-import "./Settings.css";
+import React, { useState } from 'react';
+import { Elements, StripeProvider } from 'react-stripe-elements';
+import { Container } from '@material-ui/core';
+import { API } from 'aws-amplify';
+
+import BillingForm from '../../components/BillingForm';
+
+import config from '../../config';
 
 export default function Settings(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   function billUser(details) {
-    return API.post("notes", "/billing", {
+    return API.post('notes', '/billing', {
       body: details
     });
   }
@@ -28,8 +30,8 @@ export default function Settings(props) {
         source: token.id
       });
 
-      alert("Your card has been charged successfully!");
-      props.history.push("/");
+      alert('Your card has been charged successfully!');
+      props.history.push('/');
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -37,15 +39,12 @@ export default function Settings(props) {
   }
 
   return (
-    <div className="Settings">
+    <Container maxWidth="sm">
       <StripeProvider apiKey={config.STRIPE_KEY}>
         <Elements>
-          <BillingForm
-            isLoading={isLoading}
-            onSubmit={handleFormSubmit}
-          />
+          <BillingForm isLoading={isLoading} onSubmit={handleFormSubmit} />
         </Elements>
       </StripeProvider>
-    </div>
+    </Container>
   );
 }

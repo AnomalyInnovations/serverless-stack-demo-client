@@ -1,21 +1,15 @@
-import React from "react";
-import { Button, Glyphicon } from "react-bootstrap";
-import "./LoaderButton.css";
+import React from 'react';
+import { Button, CircularProgress } from '@material-ui/core';
 
 export default function LoaderButton({
   isLoading,
-  className = "",
+  className = '',
   disabled = false,
   ...props
 }) {
   return (
-    <Button
-      className={`LoaderButton ${className}`}
-      disabled={disabled || isLoading}
-      {...props}
-    >
-      {isLoading && <Glyphicon glyph="refresh" className="spinning" />}
-      {props.children}
+    <Button disabled={disabled || isLoading} {...props}>
+      {isLoading ? <CircularProgress /> : props.children}
     </Button>
   );
 }
