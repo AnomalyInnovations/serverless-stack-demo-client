@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { RouterProps } from 'react-router';
 import { NavLink, withRouter } from 'react-router-dom';
 import { CssBaseline, Button, Container } from '@material-ui/core';
 import { Auth } from 'aws-amplify';
 
 import Routes from './Routes';
 
-import { Navigation } from './components/Navigation/Navigation';
+import Navigation from './components/Navigation/Navigation';
 
 /**
  * !IMPORTANT - I'm just enforcing material ui to work. I'm not changing any logic behind this boilerplate @vincent.
  */
-function App(props) {
+function App(props: RouterProps) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
@@ -39,36 +40,36 @@ function App(props) {
     props.history.push('/login');
   }
 
+  if (isAuthenticating) return null;
+
   return (
-    !isAuthenticating && (
-      <>
-        <CssBaseline />
-        <Navigation>
-          {isAuthenticated ? (
-            <>
-              <Button color="inherit" component={NavLink} to="/settings">
-                Settings
-              </Button>
-              <Button color="inherit" onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button color="inherit" component={NavLink} to="/login">
-                Log in
-              </Button>
-              <Button color="inherit" component={NavLink} to="/signup">
-                Sign up
-              </Button>
-            </>
-          )}
-        </Navigation>
-        <Container>
-          <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
-        </Container>
-      </>
-    )
+    <>
+      <CssBaseline />
+      <Navigation>
+        {isAuthenticated ? (
+          <>
+            <Button color="inherit" component={NavLink} to="/settings">
+              Settings
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button color="inherit" component={NavLink} to="/login">
+              Log in
+            </Button>
+            <Button color="inherit" component={NavLink} to="/signup">
+              Sign up
+            </Button>
+          </>
+        )}
+      </Navigation>
+      <Container>
+        <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
+      </Container>
+    </>
   );
 }
 

@@ -1,25 +1,22 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 
 import { useAppStyles } from './Navigation.style';
 
-export function Navigation({ children }) {
+const Navigation: FC = ({ children }) => {
   const classes = useAppStyles();
 
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography
-          variant="h6"
-          component={Link}
-          to="/"
-          className={classes.appBarHeader}
-        >
-          SCRATCH
+        <Typography variant="h6" className={classes.appBarHeader}>
+          <Link to="/">SCRATCH</Link>
         </Typography>
         {children}
       </Toolbar>
     </AppBar>
   );
-}
+};
+
+export default Navigation;

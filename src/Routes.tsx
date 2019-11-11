@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { FC, Dispatch, SetStateAction } from 'react';
+import { Route, Switch, RouteProps } from 'react-router-dom';
 import AppliedRoute from './components/AppliedRoute';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import UnauthenticatedRoute from './components/UnauthenticatedRoute';
@@ -12,7 +12,18 @@ import NewNote from './containers/NewNote/NewNote';
 import Settings from './containers/Settings/Settings';
 import NotFound from './containers/NotFound/NotFound';
 
-export default function Routes({ appProps }) {
+export interface IAppProps {
+  isAuthenticated: boolean;
+  userHasAuthenticated: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IRouteProps extends RouteProps {
+  appProps: IAppProps;
+  path: string;
+  exact?: boolean;
+}
+
+const Routes: FC<{ appProps: IAppProps }> = ({ appProps }) => {
   return (
     <Switch>
       <AppliedRoute path="/" exact component={Home} appProps={appProps} />
@@ -50,4 +61,6 @@ export default function Routes({ appProps }) {
       <Route component={NotFound} />
     </Switch>
   );
-}
+};
+
+export default Routes;
