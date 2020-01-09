@@ -25,10 +25,10 @@ export default function Settings() {
     setIsLoading(true);
 
     try {
-      // await billUser({
-      //   storage,
-      //   source: token.id
-      // });
+      await billUser({
+        storage,
+        source: token.id
+      });
 
       alert("Your card has been charged successfully!");
       history.push("/");
