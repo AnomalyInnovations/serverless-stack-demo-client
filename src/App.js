@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Auth } from "aws-amplify";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Routes from "./Routes";
 import "./App.css";
 
-function App(props) {
+function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     onLoad();
@@ -33,7 +34,7 @@ function App(props) {
 
     userHasAuthenticated(false);
 
-    props.history.push("/login");
+    history.push("/login");
   }
 
   return (

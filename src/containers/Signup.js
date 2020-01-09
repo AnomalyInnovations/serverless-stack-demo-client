@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import {
   HelpBlock,
@@ -19,6 +20,7 @@ export default function Signup(props) {
   });
   const [newUser, setNewUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   function validateForm() {
     return (
@@ -60,7 +62,7 @@ export default function Signup(props) {
       await Auth.signIn(fields.email, fields.password);
 
       props.userHasAuthenticated(true);
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
       alert(e.message);
       setIsLoading(false);

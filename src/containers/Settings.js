@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { API } from "aws-amplify";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import BillingForm from "../components/BillingForm";
 import config from "../config";
 import "./Settings.css";
 
-export default function Settings(props) {
+export default function Settings() {
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   function billUser(details) {
     return API.post("notes", "/billing", {
@@ -29,7 +31,7 @@ export default function Settings(props) {
       });
 
       alert("Your card has been charged successfully!");
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
