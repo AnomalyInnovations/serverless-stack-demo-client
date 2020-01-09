@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { API } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
@@ -6,10 +7,11 @@ import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./NewNote.css";
 
-export default function NewNote(props) {
+export default function NewNote() {
   const file = useRef(null);
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   function validateForm() {
     return content.length > 0;
@@ -38,7 +40,7 @@ export default function NewNote(props) {
         : null;
 
       await createNote({ content, attachment });
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
