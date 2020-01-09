@@ -6,7 +6,9 @@ import NotFound from "./containers/NotFound";
 export default function Routes() {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route path="/" exact>
+        <Home />
+      </Route>
       { /* Finally, catch all unmatched routes */ }
       <Route component={NotFound} />
     </Switch>
