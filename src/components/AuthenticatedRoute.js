@@ -1,16 +1,15 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-export default function AuthenticatedRoute({ component: C, appProps, ...rest }) {
+export default function AuthenticatedRoute({ children, appProps, ...rest }) {
   return (
     <Route
       {...rest}
-      render={props =>
+      render={({location}) =>
         appProps.isAuthenticated
-          ? <C {...props} {...appProps} />
+          ? children
           : <Redirect
-              to={`/login?redirect=${props.location.pathname}${props.location
-                .search}`}
+              to={`/login?redirect=${location.pathname}${location.search}`}
             />}
     />
   );

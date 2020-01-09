@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import { API, Storage } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
@@ -6,16 +7,18 @@ import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./Notes.css";
 
-export default function Notes(props) {
+export default function Notes() {
   const file = useRef(null);
   const [note, setNote] = useState(null);
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     function loadNote() {
-      return API.get("notes", `/notes/${props.match.params.id}`);
+      return API.get("notes", `/notes/${id}`);
     }
 
     async function onLoad() {
@@ -35,7 +38,7 @@ export default function Notes(props) {
     }
 
     onLoad();
-  }, [props.match.params.id]);
+  }, [id]);
 
   function validateForm() {
     return content.length > 0;
@@ -50,7 +53,7 @@ export default function Notes(props) {
   }
 
   function saveNote(note) {
-    return API.put("notes", `/notes/${props.match.params.id}`, {
+    return API.put("notes", `/notes/${id}`, {
       body: note
     });
   }
@@ -79,7 +82,7 @@ export default function Notes(props) {
         content,
         attachment: attachment || note.attachment
       });
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -87,7 +90,7 @@ export default function Notes(props) {
   }
 
   function deleteNote() {
-    return API.del("notes", `/notes/${props.match.params.id}`);
+    return API.del("notes", `/notes/${id}`);
   }
 
   async function handleDelete(event) {
@@ -105,7 +108,7 @@ export default function Notes(props) {
 
     try {
       await deleteNote();
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
       alert(e);
       setIsDeleting(false);
