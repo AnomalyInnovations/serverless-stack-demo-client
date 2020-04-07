@@ -2,7 +2,7 @@ const dev = {
   STRIPE_KEY: "pk_test_v1amvR35uoCNduJfkqGB8RLD",
   s3: {
     REGION: "us-east-1",
-    BUCKET: "notes-app-2-api-dev-attachmentsbucket-6wbhcogxihbo"
+    BUCKET: "notes-app-2-api-dev-attachmentsbucket-qvdowkch2uj1"
   },
   apiGateway: {
     REGION: "us-east-1",
@@ -10,9 +10,9 @@ const dev = {
   },
   cognito: {
     REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_yKOQs2dWK",
-    APP_CLIENT_ID: "1h0r8s763vnqj4id6dvguanp8f",
-    IDENTITY_POOL_ID: "us-east-1:dedfd34a-9d7e-4bf2-a1dd-ef603bac2ecb"
+    USER_POOL_ID: "us-east-1_f8l0OHPtp",
+    APP_CLIENT_ID: "5r5o292r1n7s2vgje5u5c7vpq0",
+    IDENTITY_POOL_ID: "us-east-1:b718098b-fe72-410b-b4c6-0750f9135672"
   }
 };
 
@@ -20,7 +20,7 @@ const prod = {
   STRIPE_KEY: "pk_test_v1amvR35uoCNduJfkqGB8RLD",
   s3: {
     REGION: "us-east-1",
-    BUCKET: "notes-app-2-api-prod-attachmentsbucket-1h5n5ttet1hy0"
+    BUCKET: "notes-app-2-api-prod-attachmentsbucket-1v9w7kkxnznb7"
   },
   apiGateway: {
     REGION: "us-east-1",
@@ -28,9 +28,9 @@ const prod = {
   },
   cognito: {
     REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_TwYpMXIJH",
-    APP_CLIENT_ID: "6kfg0o7qo2i3ndk2ur906sc5fd",
-    IDENTITY_POOL_ID: "us-east-1:f4c754b4-24f0-4754-8596-30afedece1fc"
+    USER_POOL_ID: "us-east-1_mLbfKylhm",
+    APP_CLIENT_ID: "mli2vaupiq3ga29m4698m6mrl",
+    IDENTITY_POOL_ID: "us-east-1:4e377eff-0617-4098-b218-673490ffab8d"
   }
 };
 
