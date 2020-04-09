@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import BillingForm from "../components/BillingForm";
+import { onError } from "../libs/errorLib";
 import config from "../config";
 import "./Settings.css";
 
-export default function Settings(props) {
+export default function Settings() {
+  const history = useHistory();
+  const [stripe, setStripe] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setStripe(window.Stripe(config.STRIPE_KEY));
+  }, []);
 
   function billUser(details) {
     return API.post("notes", "/billing", {
@@ -16,7 +24,7 @@ export default function Settings(props) {
 
   async function handleFormSubmit(storage, { token, error }) {
     if (error) {
-      alert(error);
+      onError(error);
       return;
     }
 
@@ -29,21 +37,18 @@ export default function Settings(props) {
       });
 
       alert("Your card has been charged successfully!");
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
-      alert(e);
+      onError(e);
       setIsLoading(false);
     }
   }
 
   return (
     <div className="Settings">
-      <StripeProvider apiKey={config.STRIPE_KEY}>
+      <StripeProvider stripe={stripe}>
         <Elements>
-          <BillingForm
-            isLoading={isLoading}
-            onSubmit={handleFormSubmit}
-          />
+          <BillingForm isLoading={isLoading} onSubmit={handleFormSubmit} />
         </Elements>
       </StripeProvider>
     </div>

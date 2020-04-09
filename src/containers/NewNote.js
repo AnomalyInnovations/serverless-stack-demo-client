@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react";
 import { API } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
+import { onError } from "../libs/errorLib";
 import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./NewNote.css";
 
-export default function NewNote(props) {
+export default function NewNote() {
   const file = useRef(null);
+  const history = useHistory();
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,8 +27,9 @@ export default function NewNote(props) {
 
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(
-        `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-          1000000} MB.`
+        `Please pick a file smaller than ${
+          config.MAX_ATTACHMENT_SIZE / 1000000
+        } MB.`
       );
       return;
     }
@@ -33,14 +37,12 @@ export default function NewNote(props) {
     setIsLoading(true);
 
     try {
-      const attachment = file.current
-        ? await s3Upload(file.current)
-        : null;
+      const attachment = file.current ? await s3Upload(file.current) : null;
 
       await createNote({ content, attachment });
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
-      alert(e);
+      onError(e);
       setIsLoading(false);
     }
   }

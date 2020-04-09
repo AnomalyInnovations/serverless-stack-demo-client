@@ -1,13 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 import { API, Storage } from "aws-amplify";
+import { useParams, useHistory } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
+import { onError } from "../libs/errorLib";
 import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./Notes.css";
 
-export default function Notes(props) {
+export default function Notes() {
   const file = useRef(null);
+  const { id } = useParams();
+  const history = useHistory();
   const [note, setNote] = useState(null);
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +19,7 @@ export default function Notes(props) {
 
   useEffect(() => {
     function loadNote() {
-      return API.get("notes", `/notes/${props.match.params.id}`);
+      return API.get("notes", `/notes/${id}`);
     }
 
     async function onLoad() {
@@ -30,12 +34,12 @@ export default function Notes(props) {
         setContent(content);
         setNote(note);
       } catch (e) {
-        alert(e);
+        onError(e);
       }
     }
 
     onLoad();
-  }, [props.match.params.id]);
+  }, [id]);
 
   function validateForm() {
     return content.length > 0;
@@ -50,7 +54,7 @@ export default function Notes(props) {
   }
 
   function saveNote(note) {
-    return API.put("notes", `/notes/${props.match.params.id}`, {
+    return API.put("notes", `/notes/${id}`, {
       body: note
     });
   }
@@ -62,8 +66,9 @@ export default function Notes(props) {
 
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(
-        `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-          1000000} MB.`
+        `Please pick a file smaller than ${
+          config.MAX_ATTACHMENT_SIZE / 1000000
+        } MB.`
       );
       return;
     }
@@ -79,15 +84,15 @@ export default function Notes(props) {
         content,
         attachment: attachment || note.attachment
       });
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
-      alert(e);
+      onError(e);
       setIsLoading(false);
     }
   }
 
   function deleteNote() {
-    return API.del("notes", `/notes/${props.match.params.id}`);
+    return API.del("notes", `/notes/${id}`);
   }
 
   async function handleDelete(event) {
@@ -105,9 +110,9 @@ export default function Notes(props) {
 
     try {
       await deleteNote();
-      props.history.push("/");
+      history.push("/");
     } catch (e) {
-      alert(e);
+      onError(e);
       setIsDeleting(false);
     }
   }
