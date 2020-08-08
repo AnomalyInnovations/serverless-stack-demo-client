@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Auth } from "aws-amplify";
-import { Link, useHistory } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import React, {useState, useEffect} from "react";
+import {Auth} from "aws-amplify";
+import {Link, useHistory} from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from 'react-bootstrap/Nav';
+import {LinkContainer} from "react-router-bootstrap";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { AppContext } from "./libs/contextLib";
-import { onError } from "./libs/errorLib";
+import {AppContext} from "./libs/contextLib";
+import {onError} from "./libs/errorLib";
 import Routes from "./Routes";
 import "./App.css";
 
@@ -15,22 +16,22 @@ function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
   useEffect(() => {
+    async function onLoad() {
+      try {
+        await Auth.currentSession();
+        userHasAuthenticated(true);
+      } catch (e) {
+        if (e !== 'No current user') {
+          onError(e);
+        }
+      }
+
+      setIsAuthenticating(false);
+    }
+
     onLoad();
   }, []);
 
-  async function onLoad() {
-    try {
-      await Auth.currentSession();
-      userHasAuthenticated(true);
-    }
-    catch(e) {
-      if (e !== 'No current user') {
-        onError(e);
-      }
-    }
-
-    setIsAuthenticating(false);
-  }
 
   async function handleLogout() {
     await Auth.signOut();
@@ -43,29 +44,27 @@ function App() {
   return (
     !isAuthenticating && (
       <div className="App container">
-        <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Scratch</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
+        <Navbar bg="light" fluid="true" collapseOnSelect>
+          <Navbar.Brand>
+            <Link to="/">Scratch</Link>
+          </Navbar.Brand>
+          <Navbar.Toggle/>
           <Navbar.Collapse>
-            <Nav pullRight>
+            <Nav className="ml-auto">
               {isAuthenticated ? (
                 <>
                   <LinkContainer to="/settings">
-                    <NavItem>Settings</NavItem>
+                    <Nav.Link>Settings</Nav.Link>
                   </LinkContainer>
-                  <NavItem onClick={handleLogout}>Logout</NavItem>
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 </>
               ) : (
                 <>
                   <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
+                    <Nav.Link>Signup</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/login">
-                    <NavItem>Login</NavItem>
+                    <Nav.Link>Login</Nav.Link>
                   </LinkContainer>
                 </>
               )}
@@ -73,8 +72,8 @@ function App() {
           </Navbar.Collapse>
         </Navbar>
         <ErrorBoundary>
-          <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-            <Routes />
+          <AppContext.Provider value={{isAuthenticated, userHasAuthenticated}}>
+            <Routes/>
           </AppContext.Provider>
         </ErrorBoundary>
       </div>

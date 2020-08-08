@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { API } from "aws-amplify";
-import { Link } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
-import { useAppContext } from "../libs/contextLib";
-import { onError } from "../libs/errorLib";
+import React, {useState, useEffect} from "react";
+import {API} from "aws-amplify";
+import {Link} from "react-router-dom";
+import {LinkContainer} from "react-router-bootstrap";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import ListGroup from "react-bootstrap/ListGroup";
+import {useAppContext} from "../libs/contextLib";
+import {onError} from "../libs/errorLib";
 import "./Home.css";
 
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
-  const { isAuthenticated } = useAppContext();
+  const {isAuthenticated} = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -40,17 +41,18 @@ export default function Home() {
     return [{}].concat(notes).map((note, i) =>
       i !== 0 ? (
         <LinkContainer key={note.noteId} to={`/notes/${note.noteId}`}>
-          <ListGroupItem header={note.content.trim().split("\n")[0]}>
+          <ListGroup.Item header={note.content.trim().split("\n")[0]}>
+            <b>{note.content.trim().split("\n")[0]}</b><br/>
             {"Created: " + new Date(note.createdAt).toLocaleString()}
-          </ListGroupItem>
+          </ListGroup.Item>
         </LinkContainer>
       ) : (
         <LinkContainer key="new" to="/notes/new">
-          <ListGroupItem>
+          <ListGroup.Item>
             <h4>
               <b>{"\uFF0B"}</b> Create a new note
             </h4>
-          </ListGroupItem>
+          </ListGroup.Item>
         </LinkContainer>
       )
     );
@@ -76,7 +78,7 @@ export default function Home() {
   function renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>Your Notes</PageHeader>
+        <Jumbotron><h3>Your Notes</h3></Jumbotron>
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
         </ListGroup>

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { API, Storage } from "aws-amplify";
 import { useParams, useHistory } from "react-router-dom";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 import LoaderButton from "../components/LoaderButton";
 import { onError } from "../libs/errorLib";
 import { s3Upload } from "../libs/awsLib";
@@ -120,18 +120,18 @@ export default function Notes() {
   return (
     <div className="Notes">
       {note && (
-        <form onSubmit={handleSubmit}>
-          <FormGroup controlId="content">
-            <FormControl
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="content">
+            <Form.Control
               value={content}
-              componentClass="textarea"
+              as="textarea"
               onChange={e => setContent(e.target.value)}
             />
-          </FormGroup>
+          </Form.Group>
           {note.attachment && (
-            <FormGroup>
-              <ControlLabel>Attachment</ControlLabel>
-              <FormControl.Static>
+            <Form.Group>
+              <Form.Label>Attachment</Form.Label>
+              <Form.Control.Static>
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -139,18 +139,18 @@ export default function Notes() {
                 >
                   {formatFilename(note.attachment)}
                 </a>
-              </FormControl.Static>
-            </FormGroup>
+              </Form.Control.Static>
+            </Form.Group>
           )}
-          <FormGroup controlId="file">
-            {!note.attachment && <ControlLabel>Attachment</ControlLabel>}
-            <FormControl onChange={handleFileChange} type="file" />
-          </FormGroup>
+          <Form.Group controlId="file">
+            {!note.attachment && <Form.Label>Attachment</Form.Label>}
+            <Form.Control onChange={handleFileChange} type="file" />
+          </Form.Group>
           <LoaderButton
             block
             type="submit"
-            bsSize="large"
-            bsStyle="primary"
+            size="lg"
+            variant="primary"
             isLoading={isLoading}
             disabled={!validateForm()}
           >
@@ -158,14 +158,14 @@ export default function Notes() {
           </LoaderButton>
           <LoaderButton
             block
-            bsSize="large"
-            bsStyle="danger"
+            size="lg"
+            variant="danger"
             onClick={handleDelete}
             isLoading={isDeleting}
           >
             Delete
           </LoaderButton>
-        </form>
+        </Form>
       )}
     </div>
   );
