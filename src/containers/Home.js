@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import { Link } from "react-router-dom";
+import { BsPencilSquare } from "react-icons/bs";
+import ListGroup from "react-bootstrap/ListGroup";
 import { LinkContainer } from "react-router-bootstrap";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import "./Home.css";
-
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -37,22 +37,28 @@ export default function Home() {
   }
 
   function renderNotesList(notes) {
-    return [{}].concat(notes).map((note, i) =>
-      i !== 0 ? (
-        <LinkContainer key={note.noteId} to={`/notes/${note.noteId}`}>
-          <ListGroupItem header={note.content.trim().split("\n")[0]}>
-            {"Created: " + new Date(note.createdAt).toLocaleString()}
-          </ListGroupItem>
+    return (
+      <>
+        <LinkContainer to="/notes/new">
+          <ListGroup.Item action className="py-3 text-nowrap text-truncate">
+            <BsPencilSquare size={17} />
+            <span className="ml-2 font-weight-bold">Create a new note</span>
+          </ListGroup.Item>
         </LinkContainer>
-      ) : (
-        <LinkContainer key="new" to="/notes/new">
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> Create a new note
-            </h4>
-          </ListGroupItem>
-        </LinkContainer>
-      )
+        {notes.map(({ noteId, content, createdAt }) => (
+          <LinkContainer key={noteId} to={`/notes/${noteId}`}>
+            <ListGroup.Item action>
+              <span className="font-weight-bold">
+                {content.trim().split("\n")[0]}
+              </span>
+              <br />
+              <span className="text-muted">
+                Created: {new Date(createdAt).toLocaleString()}
+              </span>
+            </ListGroup.Item>
+          </LinkContainer>
+        ))}
+      </>
     );
   }
 
@@ -60,9 +66,9 @@ export default function Home() {
     return (
       <div className="lander">
         <h1>Scratch</h1>
-        <p>A simple note taking app</p>
-        <div>
-          <Link to="/login" className="btn btn-info btn-lg">
+        <p className="text-muted">A simple note taking app</p>
+        <div className="pt-3">
+          <Link to="/login" className="btn btn-info btn-lg mr-3">
             Login
           </Link>
           <Link to="/signup" className="btn btn-success btn-lg">
@@ -76,14 +82,12 @@ export default function Home() {
   function renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>Your Notes</PageHeader>
-        <ListGroup>
-          {!isLoading && renderNotesList(notes)}
-        </ListGroup>
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Notes</h2>
+        <ListGroup>{!isLoading && renderNotesList(notes)}</ListGroup>
       </div>
     );
   }
-
+  
   return (
     <div className="Home">
       {isAuthenticated ? renderNotes() : renderLander()}

@@ -1,12 +1,16 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Open Sans", sans-serif;
-  font-size: 16px;
   color: #333;
-  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Open Sans", sans-serif;
 }
+h1, h2, h3, h4, h5, h6 {
+  font-family: "PT Serif", serif;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "PT Serif", serif;
 }
@@ -18,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
 select.form-control,
 textarea.form-control,
 input.form-control {
-  font-size: 16px;
+  font-size: 1rem;
 }
 input[type=file] {
   width: 100%;

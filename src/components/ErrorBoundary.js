@@ -15,7 +15,7 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     return this.state.hasError ? (
-      <div className="ErrorBoundary">
+      <div className="ErrorBoundary text-center">
         <h3>Sorry there was a problem loading this page</h3>
       </div>
     ) : (

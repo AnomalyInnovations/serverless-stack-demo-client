@@ -47,7 +47,14 @@ export default function Settings() {
   return (
     <div className="Settings">
       <StripeProvider stripe={stripe}>
-        <Elements>
+        <Elements
+          fonts={[
+            {
+              cssSrc:
+                "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800",
+            },
+          ]}
+        >
           <BillingForm isLoading={isLoading} onSubmit={handleFormSubmit} />
         </Elements>
       </StripeProvider>

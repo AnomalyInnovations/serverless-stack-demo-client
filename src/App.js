@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Auth } from "aws-amplify";
-import { Link, useHistory } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { useHistory } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AppContext } from "./libs/contextLib";
@@ -42,30 +43,30 @@ function App() {
 
   return (
     !isAuthenticating && (
-      <div className="App container">
-        <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Scratch</Link>
+      <div className="App container py-3">
+        <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
+          <LinkContainer to="/">
+            <Navbar.Brand className="font-weight-bold text-muted">
+              Scratch
             </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
+          </LinkContainer>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Nav activeKey={window.location.pathname}>
               {isAuthenticated ? (
                 <>
                   <LinkContainer to="/settings">
-                    <NavItem>Settings</NavItem>
+                    <Nav.Link>Settings</Nav.Link>
                   </LinkContainer>
-                  <NavItem onClick={handleLogout}>Logout</NavItem>
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 </>
               ) : (
                 <>
                   <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
+                    <Nav.Link>Signup</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/login">
-                    <NavItem>Login</NavItem>
+                    <Nav.Link>Login</Nav.Link>
                   </LinkContainer>
                 </>
               )}
