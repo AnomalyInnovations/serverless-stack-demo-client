@@ -32,6 +32,6 @@ $ npm run start
 
 ---
 
-This repo is maintained by [Anomaly Innovations](https://anoma.ly); makers of [Seed](https://seed.run) and [Serverless Stack](https://serverless-stack.com).
+This repo is maintained by [Serverless Stack](https://serverless-stack.com).
 
-[Email]: mailto:contact@anoma.ly
+[Email]: mailto:hello@serverless-stack.com
