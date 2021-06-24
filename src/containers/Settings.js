@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { useHistory } from "react-router-dom";
-import { Elements, StripeProvider } from "react-stripe-elements";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
 import BillingForm from "../components/BillingForm";
 import { onError } from "../libs/errorLib";
 import config from "../config";
@@ -9,12 +10,8 @@ import "./Settings.css";
 
 export default function Settings() {
   const history = useHistory();
-  const [stripe, setStripe] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setStripe(window.Stripe(config.STRIPE_KEY));
-  }, []);
+  const stripePromise = loadStripe(config.STRIPE_KEY);
 
   function billUser(details) {
     return API.post("notes", "/billing", {
@@ -46,7 +43,6 @@ export default function Settings() {
 
   return (
     <div className="Settings">
-      <StripeProvider stripe={stripe}>
         <Elements
           fonts={[
             {
@@ -54,10 +50,10 @@ export default function Settings() {
                 "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800",
             },
           ]}
+          stripe={stripePromise}
         >
           <BillingForm isLoading={isLoading} onSubmit={handleFormSubmit} />
         </Elements>
-      </StripeProvider>
     </div>
   );
 }
