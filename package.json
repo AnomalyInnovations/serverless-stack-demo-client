@@ -20,7 +20,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start-api": "bash ./scripts/start-api.sh",
+    "start:api": "bash ./scripts/start-api.sh",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
