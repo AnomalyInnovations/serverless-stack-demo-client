@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    # Needed to update this command to use -sharedDb so that nosql workbench
+    # would work correctly
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
+    volumes:
+     - dynamo-local:/home/dynamodblocal/data/
+    user: root
+
+volumes:
+  dynamo-local:
+    external: false

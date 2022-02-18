@@ -1,3 +1,5 @@
+const URL = 'http://localhost:4000/dev'
+
 const dev = {
   STRIPE_KEY: "pk_test_v1amvR35uoCNduJfkqGB8RLD",
   s3: {
@@ -6,7 +8,7 @@ const dev = {
   },
   apiGateway: {
     REGION: "us-east-1",
-    URL: "https://api.serverless-stack.seed-demo.club/dev",
+    URL,
   },
   cognito: {
     REGION: "us-east-1",
@@ -24,7 +26,7 @@ const prod = {
   },
   apiGateway: {
     REGION: "us-east-1",
-    URL: "https://api.serverless-stack.seed-demo.club/prod",
+    URL,
   },
   cognito: {
     REGION: "us-east-1",
